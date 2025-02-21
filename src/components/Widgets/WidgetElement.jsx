@@ -69,38 +69,6 @@ const WidgetElement = ({
 
   drag(drop(ref));
 
-  // const handleInputChange = (e) => {
-  //   updateWidgetValue(id, e.target.value);
-  // };
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const fileURL = URL.createObjectURL(file);
-  //     const updatedCanvasList = canvasList.map((item) =>
-  //       item.id === widget.id ? { ...item, fileURL } : item
-  //     );
-  //     setCanvasList(updatedCanvasList);
-  //     saveToLocalStorage(updatedCanvasList);
-  //   }
-  // };
-  // const handleButtonClick = () => {
-  //   alert(`You have clicked a Button at position ${index + 1}.`);
-  // };
-  // const handleLabelChange = () => {
-  //   const newLabel = prompt("Enter new button label:", widget.label);
-  //   if (newLabel !== null && newLabel.trim() !== "") {
-  //     updateWidget(id, { label: newLabel });
-  //   }
-  // };
-  // const handleTableChange = (row, col, value) => {
-  //   const updatedTable = widget.tableData.map((item, rowIndex) =>
-  //     rowIndex === row
-  //       ? item.map((cell, colIndex) => (colIndex === col ? value : cell))
-  //       : item
-  //   );
-  //   updateWidget(id, { tableData: updatedTable });
-  // };
-
   const renderElement = (type, className, label, tableData) => {
     switch (type) {
       case "input":
