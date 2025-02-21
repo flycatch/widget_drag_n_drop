@@ -1,8 +1,44 @@
-# React + Vite
+# DnD Widget Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This Application is bootstrapped with Vite, using the React-Javascript template.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Prerequisites](#prerequisite)
+- [Running Application](#running-application)
+- [Deploying Application](#deploying-application)
+- [Learn More](#learn-more)
+
+## Prerequisites
+
+For Building and Running the application.
+
+- nodeJs >= 20
+- npm >= 10
+
+## Running Application
+
+To run the application in local machine, you need to
+
+1. Install the node_modules
+   ```bash
+   npm ci
+   ```
+1. kick start the local server
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:5173/](http://localhost:5173/) to view it in the browser.
+   The page will reload if you make edits.
+
+## Deploying Application
+
+Deployed site can be accessed here: https://tiny-axolotl-ceb2ac.netlify.app/
+
+## Learn More
+
+[Vite](https://vitejs.dev/) Bundler.
+
+[React](https://react.dev/learn/start-a-new-react-project) setup,

@@ -107,6 +107,7 @@ const WidgetElement = ({
         return (
           <input
             type="text"
+            placeholder="Type here"
             className={className}
             value={widget.value || ""}
             onChange={(e) => handleInputChange(e, id, updateWidgetValue)}
