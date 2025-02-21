@@ -3,31 +3,10 @@ import Widget from "../Widgets/Widget";
 import { useDrop } from "react-dnd";
 import "./dragDrop.css";
 import WidgetElement from "../Widgets/WidgetElement";
+import { WIDGET_LIST } from "../../constants/DragNDropConstants";
+import { LOCAL_STORAGE_KEY } from "../../constants/StorageConstant";
+import { saveToLocalStorage } from "../../utilities/dragNDropFunctions";
 
-const WIDGET_LIST = [
-  {
-    id: 1,
-    item: "Text Input",
-    type: "input",
-  },
-  {
-    id: 2,
-    item: "Button",
-    type: "button",
-  },
-  {
-    id: 3,
-    item: "Image upload",
-    type: "file",
-  },
-  {
-    id: 4,
-    item: "Table",
-    type: "table",
-  },
-];
-
-const LOCAL_STORAGE_KEY = "canvasWidgets";
 const DragNDrop = () => {
   const [canvasList, setCanvasList] = useState(() => {
     try {
@@ -45,7 +24,7 @@ const DragNDrop = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(canvasList));
+    saveToLocalStorage(canvasList);
   }, [canvasList]);
 
   const [, drop] = useDrop(() => ({
@@ -64,11 +43,15 @@ const DragNDrop = () => {
       type: selectedWidget.type,
       className: "widget_element",
       value: "",
-      label: selectedWidget.type === "button" ? "Submit" : "",
+      label: selectedWidget.type === "button" ? "Button label" : "",
+      tableData:
+        selectedWidget.type === "table"
+          ? Array.from({ length: 3 }, () => Array(4).fill(""))
+          : undefined,
     };
     setCanvasList((prevCanvasList) => {
       const updatedList = [...prevCanvasList, newWidget];
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      saveToLocalStorage(updatedList);
       return updatedList;
     });
   };
@@ -87,7 +70,7 @@ const DragNDrop = () => {
       const updatedList = prevCanvasList.map((widget) =>
         widget.id === id ? { ...widget, value: newValue } : widget
       );
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      saveToLocalStorage(updatedList);
       return updatedList;
     });
   };
@@ -97,7 +80,7 @@ const DragNDrop = () => {
       const updatedList = prevCanvasList.filter(
         (widget) => widget.id !== widgetId
       );
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      saveToLocalStorage(updatedList);
       return updatedList;
     });
   };
@@ -107,8 +90,7 @@ const DragNDrop = () => {
       const updatedList = prevCanvasList.map((widget) =>
         widget.id === id ? { ...widget, ...updatedProperties } : widget
       );
-      // saveToLocalStorage(updatedList);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      saveToLocalStorage(updatedList);
       return updatedList;
     });
   };

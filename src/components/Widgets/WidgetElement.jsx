@@ -4,6 +4,13 @@ import dragIcon from "../../assets/dragIcon.svg";
 import deleteIcon from "../../assets/deleteIcon.svg";
 import editIcon from "../../assets/editIcon.svg";
 import "./widget.css";
+import {
+  handleButtonClick,
+  handleFileChange,
+  handleInputChange,
+  handleLabelChange,
+  handleTableChange,
+} from "../../utilities/widgetFunction";
 
 const WidgetElement = ({
   id,
@@ -62,31 +69,39 @@ const WidgetElement = ({
 
   drag(drop(ref));
 
-  const handleInputChange = (e) => {
-    updateWidgetValue(id, e.target.value);
-  };
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file);
-      const updatedCanvasList = canvasList.map((item) =>
-        item.id === widget.id ? { ...item, fileURL } : item
-      );
-      setCanvasList(updatedCanvasList);
-      localStorage.setItem("canvasWidgets", JSON.stringify(updatedCanvasList));
-    }
-  };
-  const handleButtonClick = () => {
-    alert(`You have clicked a Button at position ${index + 1}.`);
-  };
-  const handleLabelChange = () => {
-    const newLabel = prompt("Enter new button label:", widget.label);
-    if (newLabel !== null && newLabel.trim() !== "") {
-      updateWidget(id, { label: newLabel });
-    }
-  };
+  // const handleInputChange = (e) => {
+  //   updateWidgetValue(id, e.target.value);
+  // };
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const fileURL = URL.createObjectURL(file);
+  //     const updatedCanvasList = canvasList.map((item) =>
+  //       item.id === widget.id ? { ...item, fileURL } : item
+  //     );
+  //     setCanvasList(updatedCanvasList);
+  //     saveToLocalStorage(updatedCanvasList);
+  //   }
+  // };
+  // const handleButtonClick = () => {
+  //   alert(`You have clicked a Button at position ${index + 1}.`);
+  // };
+  // const handleLabelChange = () => {
+  //   const newLabel = prompt("Enter new button label:", widget.label);
+  //   if (newLabel !== null && newLabel.trim() !== "") {
+  //     updateWidget(id, { label: newLabel });
+  //   }
+  // };
+  // const handleTableChange = (row, col, value) => {
+  //   const updatedTable = widget.tableData.map((item, rowIndex) =>
+  //     rowIndex === row
+  //       ? item.map((cell, colIndex) => (colIndex === col ? value : cell))
+  //       : item
+  //   );
+  //   updateWidget(id, { tableData: updatedTable });
+  // };
 
-  const renderElement = (type, className, label) => {
+  const renderElement = (type, className, label, tableData) => {
     switch (type) {
       case "input":
         return (
@@ -94,7 +109,7 @@ const WidgetElement = ({
             type="text"
             className={className}
             value={widget.value || ""}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e, id, updateWidgetValue)}
           />
         );
       case "button":
@@ -102,13 +117,13 @@ const WidgetElement = ({
           <div className="widget_btn_wrap">
             <button
               className={`${className} widget_btn`}
-              onClick={handleButtonClick}
+              onClick={() => handleButtonClick(index)}
             >
               {label}
             </button>
             <img
               src={editIcon}
-              onClick={handleLabelChange}
+              onClick={() => handleLabelChange(widget, id, updateWidget)}
               className="widget_edit"
             />
           </div>
@@ -119,7 +134,9 @@ const WidgetElement = ({
             <input
               type="file"
               className={className}
-              onChange={handleFileChange}
+              onChange={(e) =>
+                handleFileChange(e, widget, canvasList, setCanvasList)
+              }
             />
             {widget.fileURL && (
               <img
@@ -131,7 +148,35 @@ const WidgetElement = ({
           </div>
         );
       case "table":
-        return <div className={className}>Table Component</div>;
+        return (
+          <table className={`${className} widget_table`} border="1">
+            <tbody>
+              {tableData.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((cell, colIndex) => (
+                    <td key={colIndex} className="table_data">
+                      <input
+                        type="text"
+                        value={cell}
+                        onChange={(e) =>
+                          handleTableChange(
+                            widget,
+                            id,
+                            rowIndex,
+                            colIndex,
+                            e.target.value,
+                            updateWidget
+                          )
+                        }
+                        className="table_input"
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
       default:
         return <div className={className}>Unknown Widget</div>;
     }
@@ -144,7 +189,12 @@ const WidgetElement = ({
       className={className}
       style={isDragging ? { backgroundColor: "greenyellow" } : {}}
     >
-      {renderElement(widget.type, widget.className, widget.label)}
+      {renderElement(
+        widget.type,
+        widget.className,
+        widget.label,
+        widget.tableData
+      )}
       <img src={dragIcon} ref={ref} className="widget_handle" />
       <img
         src={deleteIcon}

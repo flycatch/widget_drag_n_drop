@@ -26,6 +26,20 @@
 }
 .widget_btn {
   width: 180px;
+  cursor: pointer;
+}
+.widget_table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 2px solid black;
+}
+.table_data {
+  padding: 5px;
+  border: 2px solid black;
+}
+.table_input {
+  width: 57px;
+  border: 1px solid grey;
 }
 
 .image_upload_wrap {
