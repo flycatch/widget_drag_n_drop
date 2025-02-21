@@ -69,6 +69,33 @@ const WidgetElement = ({
 
   drag(drop(ref));
 
+  const addRow = () => {
+    const newTable = [
+      ...widget.tableData,
+      Array(widget.tableData[0].length).fill(""),
+    ];
+    updateWidget(id, { tableData: newTable });
+  };
+
+  const removeRow = () => {
+    if (widget.tableData.length > 1) {
+      const newTable = widget.tableData.slice(0, -1);
+      updateWidget(id, { tableData: newTable });
+    }
+  };
+
+  const addColumn = () => {
+    const newTable = widget.tableData.map((row) => [...row, ""]);
+    updateWidget(id, { tableData: newTable });
+  };
+
+  const removeColumn = () => {
+    if (widget.tableData[0].length > 1) {
+      const newTable = widget.tableData.map((row) => row.slice(0, -1));
+      updateWidget(id, { tableData: newTable });
+    }
+  };
+
   const renderElement = (type, className, label, tableData) => {
     switch (type) {
       case "input":
@@ -118,34 +145,44 @@ const WidgetElement = ({
         );
       case "table":
         return (
-          <table className={`${className} widget_table`} border="1">
-            <tbody>
-              {tableData.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {row.map((cell, colIndex) => (
-                    <td key={colIndex} className="table_data">
-                      <input
-                        type="text"
-                        placeholder="Type"
-                        value={cell}
-                        onChange={(e) =>
-                          handleTableChange(
-                            widget,
-                            id,
-                            rowIndex,
-                            colIndex,
-                            e.target.value,
-                            updateWidget
-                          )
-                        }
-                        className="table_input"
-                      />
-                    </td>
+          <div>
+            <div className="widget_table_btn_wrap">
+              <button onClick={addRow}>➕ Add Row</button>
+              <button onClick={removeRow}>➖ Remove Row</button>
+              <button onClick={addColumn}>➕ Add Column</button>
+              <button onClick={removeColumn}>➖ Remove Column</button>
+            </div>
+            <div className="widget_table_wrap">
+              <table className={`${className} widget_table`} border="1">
+                <tbody>
+                  {tableData.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                      {row.map((cell, colIndex) => (
+                        <td key={colIndex} className="table_data">
+                          <input
+                            type="text"
+                            placeholder="Type"
+                            value={cell}
+                            onChange={(e) =>
+                              handleTableChange(
+                                widget,
+                                id,
+                                rowIndex,
+                                colIndex,
+                                e.target.value,
+                                updateWidget
+                              )
+                            }
+                            className="table_input"
+                          />
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
         );
       default:
         return <div className={className}>Unknown Widget</div>;

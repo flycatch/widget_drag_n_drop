@@ -26,7 +26,28 @@
 }
 .widget_btn {
   width: 180px;
+  height: 30px;
   cursor: pointer;
+}
+.widget_table_btn_wrap {
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  button {
+    background-color: orange;
+    color: black;
+    cursor: pointer;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+}
+.widget_table_wrap {
+  width: 312px;
+  overflow-x: auto;
 }
 .widget_table {
   border-collapse: collapse;
@@ -38,7 +59,7 @@
   border: 2px solid black;
 }
 .table_input {
-  width: 57px;
+  width: calc(100% - 6px);
   border: 1px solid grey;
 }
 
@@ -47,6 +68,8 @@
   display: flex;
 
   .uploaded_image {
-    width: 50px;
+    width: 70px;
+    padding: 2px;
+    border: 1px solid red;
   }
 }
