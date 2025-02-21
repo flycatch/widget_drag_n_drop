@@ -64,6 +64,7 @@ const DragNDrop = () => {
       type: selectedWidget.type,
       className: "widget_element",
       value: "",
+      label: selectedWidget.type === "button" ? "Submit" : "",
     };
     setCanvasList((prevCanvasList) => {
       const updatedList = [...prevCanvasList, newWidget];
@@ -101,6 +102,17 @@ const DragNDrop = () => {
     });
   };
 
+  const updateWidget = (id, updatedProperties) => {
+    setCanvasList((prevCanvasList) => {
+      const updatedList = prevCanvasList.map((widget) =>
+        widget.id === id ? { ...widget, ...updatedProperties } : widget
+      );
+      // saveToLocalStorage(updatedList);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      return updatedList;
+    });
+  };
+
   console.log("canvasList: ", canvasList);
 
   return (
@@ -122,6 +134,7 @@ const DragNDrop = () => {
                 className={"canvas_items"}
                 moveElement={moveElement}
                 removeWidget={removeWidget}
+                updateWidget={updateWidget}
                 updateWidgetValue={updateWidgetValue}
                 canvasList={canvasList}
                 setCanvasList={setCanvasList}

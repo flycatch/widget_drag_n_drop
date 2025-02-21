@@ -3,6 +3,7 @@
   height: 1rem;
   display: inline-block;
   margin-right: 0.75rem;
+  margin-left: 0.75rem;
   cursor: move;
 }
 .widget_delete {
@@ -11,6 +12,20 @@
   display: inline-block;
   margin-right: 0.75rem;
   cursor: pointer;
+}
+.widget_edit {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  cursor: pointer;
+}
+.widget_btn_wrap {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.widget_btn {
+  width: 180px;
 }
 
 .image_upload_wrap {

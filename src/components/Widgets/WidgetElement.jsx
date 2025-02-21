@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import dragIcon from "../../assets/dragIcon.svg";
 import deleteIcon from "../../assets/deleteIcon.svg";
+import editIcon from "../../assets/editIcon.svg";
 import "./widget.css";
 
 const WidgetElement = ({
@@ -11,6 +12,7 @@ const WidgetElement = ({
   className,
   moveElement,
   removeWidget,
+  updateWidget,
   updateWidgetValue,
   canvasList,
   setCanvasList,
@@ -77,8 +79,14 @@ const WidgetElement = ({
   const handleButtonClick = () => {
     alert(`You have clicked a Button at position ${index + 1}.`);
   };
+  const handleLabelChange = () => {
+    const newLabel = prompt("Enter new button label:", widget.label);
+    if (newLabel !== null && newLabel.trim() !== "") {
+      updateWidget(id, { label: newLabel });
+    }
+  };
 
-  const renderElement = (type, className) => {
+  const renderElement = (type, className, label) => {
     switch (type) {
       case "input":
         return (
@@ -91,9 +99,19 @@ const WidgetElement = ({
         );
       case "button":
         return (
-          <button className={className} onClick={handleButtonClick}>
-            Submit
-          </button>
+          <div className="widget_btn_wrap">
+            <button
+              className={`${className} widget_btn`}
+              onClick={handleButtonClick}
+            >
+              {label}
+            </button>
+            <img
+              src={editIcon}
+              onClick={handleLabelChange}
+              className="widget_edit"
+            />
+          </div>
         );
       case "file":
         return (
@@ -126,7 +144,7 @@ const WidgetElement = ({
       className={className}
       style={isDragging ? { backgroundColor: "greenyellow" } : {}}
     >
-      {renderElement(widget.type, widget.className)}
+      {renderElement(widget.type, widget.className, widget.label)}
       <img src={dragIcon} ref={ref} className="widget_handle" />
       <img
         src={deleteIcon}
