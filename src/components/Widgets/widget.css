@@ -1,0 +1,7 @@
+.widget_handle {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  margin-right: 0.75rem;
+  cursor: move;
+}
