@@ -105,7 +105,14 @@ const DragNDrop = () => {
         ))}
       </div>
       <div className="canvas_container" ref={drop}>
-        <div className="scroll_container">
+        <div
+          className="scroll_container"
+          style={
+            canvasList.length
+              ? { border: "1px dotted green", borderRadius: "12px" }
+              : {}
+          }
+        >
           {canvasList.length ? (
             canvasList.map((items, index) => (
               <WidgetElement

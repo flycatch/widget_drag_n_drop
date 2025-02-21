@@ -126,6 +126,7 @@ const WidgetElement = ({
                     <td key={colIndex} className="table_data">
                       <input
                         type="text"
+                        placeholder="Type"
                         value={cell}
                         onChange={(e) =>
                           handleTableChange(
