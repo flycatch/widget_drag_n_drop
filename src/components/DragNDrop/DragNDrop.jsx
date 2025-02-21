@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Widget from "../Widgets/Widget";
 import { useDrop } from "react-dnd";
 import "./dragDrop.css";
@@ -8,25 +8,45 @@ const WIDGET_LIST = [
   {
     id: 1,
     item: "Text Input",
-    element: <input type="text" className="widget_element" />,
+    type: "input",
   },
   {
     id: 2,
     item: "Button",
-    element: <button className="widget_element">Submit</button>,
+    type: "button",
   },
   {
     id: 3,
     item: "Image upload",
-    element: <input type="file" className="widget_element" />,
+    type: "file",
   },
   {
     id: 4,
     item: "Table",
+    type: "table",
   },
 ];
+
+const LOCAL_STORAGE_KEY = "canvasWidgets";
 const DragNDrop = () => {
-  const [canvasList, setCanvasList] = useState([]);
+  const [canvasList, setCanvasList] = useState(() => {
+    try {
+      const savedCanvas = localStorage.getItem(LOCAL_STORAGE_KEY);
+      return savedCanvas
+        ? JSON.parse(savedCanvas).map((widget) => ({
+            ...widget,
+            fileURL: widget.fileURL || null,
+          }))
+        : [];
+    } catch (error) {
+      console.error("Error loading canvasList:", error);
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(canvasList));
+  }, [canvasList]);
 
   const [, drop] = useDrop(() => ({
     accept: "div",
@@ -39,8 +59,17 @@ const DragNDrop = () => {
   const addItemToCanvas = (itemId) => {
     const selectedWidget = WIDGET_LIST.find((widget) => widget.id === itemId);
     if (!selectedWidget) return;
-    const newWidget = { ...selectedWidget, id: Date.now() };
-    setCanvasList((prevCanvasList) => [...prevCanvasList, newWidget]);
+    const newWidget = {
+      id: Date.now(),
+      type: selectedWidget.type,
+      className: "widget_element",
+      value: "",
+    };
+    setCanvasList((prevCanvasList) => {
+      const updatedList = [...prevCanvasList, newWidget];
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      return updatedList;
+    });
   };
 
   const moveElement = useCallback((dragIndex, hoverIndex) => {
@@ -51,6 +80,26 @@ const DragNDrop = () => {
       return updatedCanvasList;
     });
   }, []);
+
+  const updateWidgetValue = (id, newValue) => {
+    setCanvasList((prevCanvasList) => {
+      const updatedList = prevCanvasList.map((widget) =>
+        widget.id === id ? { ...widget, value: newValue } : widget
+      );
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      return updatedList;
+    });
+  };
+
+  const removeWidget = (widgetId) => {
+    setCanvasList((prevCanvasList) => {
+      const updatedList = prevCanvasList.filter(
+        (widget) => widget.id !== widgetId
+      );
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedList));
+      return updatedList;
+    });
+  };
 
   console.log("canvasList: ", canvasList);
 
@@ -72,6 +121,10 @@ const DragNDrop = () => {
                 widget={items}
                 className={"canvas_items"}
                 moveElement={moveElement}
+                removeWidget={removeWidget}
+                updateWidgetValue={updateWidgetValue}
+                canvasList={canvasList}
+                setCanvasList={setCanvasList}
               />
             ))
           ) : (

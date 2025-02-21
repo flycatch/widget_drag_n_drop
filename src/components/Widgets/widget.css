@@ -5,3 +5,19 @@
   margin-right: 0.75rem;
   cursor: move;
 }
+.widget_delete {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  margin-right: 0.75rem;
+  cursor: pointer;
+}
+
+.image_upload_wrap {
+  width: 100%;
+  display: flex;
+
+  .uploaded_image {
+    width: 50px;
+  }
+}
