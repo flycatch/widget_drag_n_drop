@@ -6,7 +6,7 @@ This Application is bootstrapped with Vite, using the React-Javascript template.
 
 - [Prerequisites](#prerequisite)
 - [Running Application](#running-application)
-- [Deploying Application](#deploying-application)
+- [Deployed Application](#deployed-application)
 - [Learn More](#learn-more)
 
 ## Prerequisites
@@ -33,7 +33,7 @@ To run the application in local machine, you need to
    Open [http://localhost:5173/](http://localhost:5173/) to view it in the browser.
    The page will reload if you make edits.
 
-## Deploying Application
+## Deployed Application
 
 Deployed site can be accessed here: https://tiny-axolotl-ceb2ac.netlify.app/
 
